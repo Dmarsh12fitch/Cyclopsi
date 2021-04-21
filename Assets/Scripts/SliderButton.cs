@@ -27,6 +27,9 @@ public class SliderButton : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
+
+        //trigger enter places the player displays above
+
         if (collision.gameObject.CompareTag("Player") && !hasBeenPressed)
         {
             hasBeenPressed = true;

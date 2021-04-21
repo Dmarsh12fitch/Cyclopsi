@@ -326,6 +326,7 @@ MonoBehaviour:
   leftBounds: -0.3
   rightBounds: 0.3
   movingRight: 1
+  speed: 0.002
   sliderAnimDisplay: {fileID: 864619260076282464}
   sliderStaticDisplay: {fileID: 864619260616184102}
 --- !u!1 &864619259850170370

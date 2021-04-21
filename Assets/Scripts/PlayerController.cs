@@ -115,23 +115,6 @@ public class PlayerController : MonoBehaviour
             }
             isOnGround = true;
         }
-
-        /*
-        if (collision.gameObject.CompareTag("Slider"))
-        {
-            isOnGround = true;
-            Debug.Log("on platform");
-            if (collision.gameObject.GetComponent<Slider>().movingRight)
-            {
-                transform.Translate(0.002f, 0, 0);
-                Debug.Log("Should be moving");
-            } else
-            {
-                transform.Translate(-0.002f, 0, 0);
-                Debug.Log("Shoul b moving");
-            }
-        }
-        */
     }
 
     void lookUp()

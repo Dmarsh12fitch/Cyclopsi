@@ -11,6 +11,8 @@ public class Slider : MonoBehaviour
     private float xCenter;
     public bool movingRight = true;
 
+    public float speed;
+
     public GameObject sliderAnimDisplay;
     public GameObject sliderStaticDisplay;
 
@@ -60,14 +62,14 @@ public class Slider : MonoBehaviour
 
     void moveRight()
     {
-        transform.Translate(0.001f, 0, 0);
+        transform.Translate(speed, 0, 0);
         //player.transform.Translate(0.002f, 0, 0);
         
     }
 
     void moveLeft()
     {
-        transform.Translate(-0.001f, 0, 0);
+        transform.Translate(-speed, 0, 0);
         //player.transform.Translate(-0.002f, 0, 0);
     }
 
@@ -77,10 +79,10 @@ public class Slider : MonoBehaviour
         {
             if (movingRight)
             {
-                collision.transform.Translate(0.001f, 0, 0);
+                collision.transform.Translate(speed, 0, 0);
             } else
             {
-                collision.transform.Translate(-0.001f, 0, 0);
+                collision.transform.Translate(-speed, 0, 0);
             }
         }
     }
