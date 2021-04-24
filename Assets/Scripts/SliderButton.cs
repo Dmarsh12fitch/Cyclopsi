@@ -35,7 +35,7 @@ public class SliderButton : MonoBehaviour
             hasBeenPressed = true;
             buttonUpDisplay.SetActive(false);
             buttonAnimDisplay.SetActive(true);
-            collision.gameObject.transform.localPosition = new Vector3(transform.position.x, (transform.position.y + 0.1f), transform.position.z);
+            //collision.gameObject.transform.localPosition = new Vector3(transform.position.x, (transform.position.y + 0.1f), transform.position.z);
             StartCoroutine(endAnimTimer());
         }
     }
