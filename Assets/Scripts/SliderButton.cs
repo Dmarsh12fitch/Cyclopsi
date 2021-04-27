@@ -30,19 +30,25 @@ public class SliderButton : MonoBehaviour
 
         //trigger enter places the player displays above
 
-        if (collision.gameObject.CompareTag("Player") && !hasBeenPressed)
+        if (collision.gameObject.CompareTag("Player") && !hasBeenPressed && collision.gameObject.transform.position.y > (0.05 + transform.position.y))
         {
-            hasBeenPressed = true;
-            buttonUpDisplay.SetActive(false);
-            buttonAnimDisplay.SetActive(true);
-            //collision.gameObject.transform.localPosition = new Vector3(transform.position.x, (transform.position.y + 0.1f), transform.position.z);
-            StartCoroutine(endAnimTimer());
+            buttonPress();
         }
     }
 
+    public void buttonPress()
+    {
+        hasBeenPressed = true;
+        buttonUpDisplay.SetActive(false);
+        buttonAnimDisplay.SetActive(true);
+        //collision.gameObject.transform.localPosition = new Vector3(transform.position.x, (transform.position.y + 0.1f), transform.position.z);
+        StartCoroutine(endAnimTimer());
+    }
+
+
     IEnumerator endAnimTimer()
     {
-        yield return new WaitForSeconds(.25f);
+        yield return new WaitForSeconds(.4f);
         buttonAnimDisplay.SetActive(false);
         buttonPressedDisplay.SetActive(true);
         mySlider.GetComponent<Slider>().sliderStaticDisplay.SetActive(false);

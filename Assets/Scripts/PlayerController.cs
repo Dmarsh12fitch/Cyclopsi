@@ -14,14 +14,22 @@ public class PlayerController : MonoBehaviour
     public GameObject eyeFrontStaticDisplay;
     public GameObject eyeFrontAnimDisplay;
 
+    public GameObject laser;
+    public List<GameObject> laserTileArray;
+    private int laserTilesMade;
+
     public float speed;
     public float jumpForce;
     public bool isOnGround = true;
     public string isLooking = "right";
     public bool imobilized;
+    public bool hashitsomething = false;
 
     private float idleDelay = 1;
     private float idleDelayMax = 1;
+
+    private float laserPreviousX;
+    private float laserPreviousY;
 
 
 
@@ -67,6 +75,12 @@ public class PlayerController : MonoBehaviour
                 jump();
             }
 
+            //fire Lazer
+            if (Input.GetButtonDown("Fire3"))
+            {
+                fireLaser();
+            }
+
             //idle or static
             if (Mathf.Abs(horizontalInput) <= 0.001f)
             {
@@ -107,15 +121,29 @@ public class PlayerController : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if ((collision.gameObject.CompareTag("Ground") || collision.gameObject.CompareTag("Button") || collision.gameObject.CompareTag("Slider")) && collision.transform.position.y < transform.position.y)
+        if ((collision.gameObject.CompareTag("Ground") || collision.gameObject.CompareTag("Button")) && collision.transform.position.y < transform.position.y)
         {
-            if(isOnGround == false)
+            if (isOnGround == false)
             {
                 //this is when it first lands (perhaps an effect?)
             }
             isOnGround = true;
         }
+        if (collision.gameObject.CompareTag("Slider"))
+        {
+            isOnGround = true;
+            transform.parent = collision.gameObject.transform;
+        }
     }
+
+    private void OnCollisionExit2D(Collision2D collision)
+    {
+        if (collision.gameObject.CompareTag("Slider"))
+        {
+            transform.parent = null;
+        }
+    }
+
 
     void lookUp()
     {
@@ -199,4 +227,68 @@ public class PlayerController : MonoBehaviour
         playerRigibody.AddForce(new Vector3(0, jumpForce, 0), ForceMode2D.Impulse);
         idleDelay = idleDelayMax;
     }
+
+    void fireLaser()
+    {
+        imobilized = true;
+        playerRigibody.constraints = RigidbodyConstraints2D.FreezeAll;
+        hashitsomething = false;
+        laserPreviousX = transform.position.x;
+        laserPreviousY = transform.position.y;
+        laserTilesMade = 0;
+        //DO ANIMATION HERE + WAIT, then
+        InvokeRepeating("makeALaserTile", 0, 0.02f);
+    }
+
+    void makeALaserTile()
+    {
+        if (hashitsomething || laserTilesMade >= 60)
+        {
+            CancelInvoke("makeALaserTile");
+            StartCoroutine(destroyLasers());
+        }
+
+        if (isLooking == "right" && !hashitsomething)
+        {
+            //Debug.Log("rihgt");
+            Vector3 spawnPos = new Vector3((laserPreviousX - 0.08f), laserPreviousY, 0.1f);
+            GameObject go = Instantiate(laser, spawnPos, Quaternion.identity);
+            laserTileArray.Add(go);
+            laserPreviousX = laserPreviousX - 0.08f;
+            laserTilesMade++;
+        } else if (isLooking == "left" && !hashitsomething)
+        {
+            //Debug.Log("letf");
+            Vector3 spawnPos = new Vector3((laserPreviousX + 0.08f), laserPreviousY, 0.1f);
+            GameObject go = Instantiate(laser, spawnPos, Quaternion.identity);
+            laserTileArray.Add(go);
+            laserPreviousX = laserPreviousX + 0.08f;
+            laserTilesMade++;
+        } else if (isLooking.Equals("up") && !hashitsomething)
+        {
+            Vector3 spawnPos = new Vector3(laserPreviousX, (laserPreviousY + 0.08f), 0.01f);
+            Quaternion spawnRot = new Quaternion(0, 0, 90, 90);
+            GameObject go = Instantiate(laser, spawnPos, spawnRot);                         //change the orientation here
+            laserTileArray.Add(go);
+            laserPreviousY = laserPreviousY + 0.08f;
+            laserTilesMade++;
+        }
+    }
+
+    IEnumerator destroyLasers()
+    {
+        //destroy lasers and unpause
+        yield return new WaitForSeconds(1f);
+        imobilized = false;
+        playerRigibody.constraints = RigidbodyConstraints2D.None;
+        playerRigibody.constraints = RigidbodyConstraints2D.FreezeRotation;
+        playerRigibody.AddForce(new Vector3(0, 0.1f, 0), ForceMode2D.Impulse);
+        foreach(GameObject go in laserTileArray)
+        {
+            Destroy(go);
+        }
+    }
+
+
+
 }

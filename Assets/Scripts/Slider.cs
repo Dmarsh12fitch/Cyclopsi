@@ -37,8 +37,9 @@ public class Slider : MonoBehaviour
             xPosRelative = transform.position.x - xCenter;
             if (xPosRelative < leftBounds)
             {
-                movingRight = true;   
-            } else if (xPosRelative > rightBounds)
+                movingRight = true;
+            }
+            else if (xPosRelative > rightBounds)
             {
                 movingRight = false;
             }
@@ -46,19 +47,15 @@ public class Slider : MonoBehaviour
             if (movingRight)
             {
                 moveRight();
-            } else
+            }
+            else
             {
                 moveLeft();
             }
-
-
-
             //make sure it moves the player that is on top of it too
 
         }
     }
-
-
 
     void moveRight()
     {
@@ -73,6 +70,8 @@ public class Slider : MonoBehaviour
         //player.transform.Translate(-0.002f, 0, 0);
     }
 
+
+    /*
     private void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision.gameObject.CompareTag("Player"))
@@ -86,6 +85,6 @@ public class Slider : MonoBehaviour
             }
         }
     }
-
+    */
 
 }
