@@ -8,6 +8,8 @@ TagManager:
   - Button
   - Slider
   - Laser
+  - jumpPlatform
+  - mushroomTop
   layers:
   - Default
   - TransparentFX

@@ -527,11 +527,13 @@ MonoBehaviour:
   eyeFrontStaticDisplay: {fileID: 581212795}
   eyeFrontAnimDisplay: {fileID: 414972441}
   laser: {fileID: 2753820416865613625, guid: 3ebfd250fadd5fd458e2c4a84219f907, type: 3}
+  laserTileArray: []
   speed: 1.5
   jumpForce: 2.5
   isOnGround: 0
   isLooking: right
   imobilized: 0
+  hashitsomething: 0
 --- !u!50 &154046648
 Rigidbody2D:
   serializedVersion: 4
@@ -551,7 +553,7 @@ Rigidbody2D:
   m_Material: {fileID: 0}
   m_Interpolate: 0
   m_SleepingMode: 1
-  m_CollisionDetection: 0
+  m_CollisionDetection: 1
   m_Constraints: 4
 --- !u!61 &154046649
 BoxCollider2D:

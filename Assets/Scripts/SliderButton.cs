@@ -11,6 +11,8 @@ public class SliderButton : MonoBehaviour
 
     public GameObject mySlider;
 
+    public bool isFaceUpToBeSteppedOn;
+
 
 
     // Start is called before the first frame update
@@ -30,19 +32,30 @@ public class SliderButton : MonoBehaviour
 
         //trigger enter places the player displays above
 
-        if (collision.gameObject.CompareTag("Player") && !hasBeenPressed && collision.gameObject.transform.position.y > (0.05 + transform.position.y))
+        if (collision.gameObject.CompareTag("Player") && !hasBeenPressed)
         {
-            buttonPress();
+            if (isFaceUpToBeSteppedOn)
+            {
+                if(collision.gameObject.transform.position.y >= transform.position.y + 0.06f)
+                {
+                    buttonPress();
+                }
+            } else
+            {
+                buttonPress();
+            }
         }
     }
 
     public void buttonPress()
     {
-        hasBeenPressed = true;
-        buttonUpDisplay.SetActive(false);
-        buttonAnimDisplay.SetActive(true);
-        //collision.gameObject.transform.localPosition = new Vector3(transform.position.x, (transform.position.y + 0.1f), transform.position.z);
-        StartCoroutine(endAnimTimer());
+        if (!hasBeenPressed)
+        {
+            hasBeenPressed = true;
+            buttonUpDisplay.SetActive(false);
+            buttonAnimDisplay.SetActive(true);
+            StartCoroutine(endAnimTimer());
+        }
     }
 
 

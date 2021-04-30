@@ -22,7 +22,7 @@ public class LaserTile : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.gameObject.CompareTag("Button") && !hascollidedOnce)
+        if (collision.gameObject.CompareTag("Button") && !collision.gameObject.CompareTag("Laser") && !hascollidedOnce)
         {
             collision.gameObject.GetComponent<SliderButton>().buttonPress();
             playerControllerScript.hashitsomething = true;

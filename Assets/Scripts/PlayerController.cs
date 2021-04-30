@@ -31,6 +31,8 @@ public class PlayerController : MonoBehaviour
     private float laserPreviousX;
     private float laserPreviousY;
 
+    private bool onMushroomTop = false;
+
 
 
     // Start is called before the first frame update
@@ -48,7 +50,7 @@ public class PlayerController : MonoBehaviour
             playerRigibody.velocity = new Vector3((horizontalInput * speed), playerRigibody.velocity.y, 0);
 
             //looking left or right
-            if (horizontalInput > 0)                //switch to getkeydown???
+            if (horizontalInput > 0)
             {
                 lookLeft();
             }
@@ -67,6 +69,10 @@ public class PlayerController : MonoBehaviour
             if (Input.GetKeyDown(KeyCode.S))
             {
                 lookCamera();
+                if (onMushroomTop)
+                {
+                    transform.position = new Vector3(transform.position.x, (transform.position.y - 0.16f), transform.position.z);
+                }
             }
 
             //jump
@@ -84,7 +90,7 @@ public class PlayerController : MonoBehaviour
             //idle or static
             if (Mathf.Abs(horizontalInput) <= 0.001f)
             {
-                if (idleDelay <= 0)
+                if (idleDelay < 0)
                 {
                     if (isLooking.Equals("up"))
                     {
@@ -134,6 +140,16 @@ public class PlayerController : MonoBehaviour
             isOnGround = true;
             transform.parent = collision.gameObject.transform;
         }
+        if (collision.gameObject.CompareTag("jumpPlatform"))
+        {
+            isOnGround = true;
+            jumpForce = 4;
+        }
+        if (collision.gameObject.CompareTag("mushroomTop"))
+        {
+            isOnGround = true;
+            onMushroomTop = true;
+        }
     }
 
     private void OnCollisionExit2D(Collision2D collision)
@@ -141,6 +157,12 @@ public class PlayerController : MonoBehaviour
         if (collision.gameObject.CompareTag("Slider"))
         {
             transform.parent = null;
+        } else if (collision.gameObject.CompareTag("jumpPlatform"))
+        {
+            jumpForce = 2.5f;
+        } else if (collision.gameObject.CompareTag("mushroomTop"))
+        {
+            onMushroomTop = false;
         }
     }
 
@@ -178,7 +200,7 @@ public class PlayerController : MonoBehaviour
         eyeIdleAnimDisplay.SetActive(false);
         eyeLookUpStaticDisplay.SetActive(false);
         eyeFrontAnimDisplay.SetActive(false);
-        eyeFrontAnimDisplay.SetActive(false);
+        eyeFrontStaticDisplay.SetActive(false);
         idleDelay = idleDelayMax;
     }
 
@@ -192,7 +214,7 @@ public class PlayerController : MonoBehaviour
         eyeIdleAnimDisplay.SetActive(false);
         eyeLookUpStaticDisplay.SetActive(false);
         eyeFrontAnimDisplay.SetActive(false);
-        eyeFrontAnimDisplay.SetActive(false);
+        eyeFrontStaticDisplay.SetActive(false);
         idleDelay = idleDelayMax;
     }
 
@@ -236,7 +258,7 @@ public class PlayerController : MonoBehaviour
         laserPreviousX = transform.position.x;
         laserPreviousY = transform.position.y;
         laserTilesMade = 0;
-        //DO ANIMATION HERE + WAIT, then
+                                                                                            //DO ANIMATION HERE + WAIT, then
         InvokeRepeating("makeALaserTile", 0, 0.02f);
     }
 
@@ -250,25 +272,23 @@ public class PlayerController : MonoBehaviour
 
         if (isLooking == "right" && !hashitsomething)
         {
-            //Debug.Log("rihgt");
-            Vector3 spawnPos = new Vector3((laserPreviousX - 0.08f), laserPreviousY, 0.1f);
+            Vector3 spawnPos = new Vector3((laserPreviousX - 0.08f), laserPreviousY, 0.3f);
             GameObject go = Instantiate(laser, spawnPos, Quaternion.identity);
             laserTileArray.Add(go);
             laserPreviousX = laserPreviousX - 0.08f;
             laserTilesMade++;
         } else if (isLooking == "left" && !hashitsomething)
         {
-            //Debug.Log("letf");
-            Vector3 spawnPos = new Vector3((laserPreviousX + 0.08f), laserPreviousY, 0.1f);
+            Vector3 spawnPos = new Vector3((laserPreviousX + 0.08f), laserPreviousY, 0.3f);
             GameObject go = Instantiate(laser, spawnPos, Quaternion.identity);
             laserTileArray.Add(go);
             laserPreviousX = laserPreviousX + 0.08f;
             laserTilesMade++;
         } else if (isLooking.Equals("up") && !hashitsomething)
         {
-            Vector3 spawnPos = new Vector3(laserPreviousX, (laserPreviousY + 0.08f), 0.01f);
+            Vector3 spawnPos = new Vector3(laserPreviousX, (laserPreviousY + 0.08f), 0.3f);
             Quaternion spawnRot = new Quaternion(0, 0, 90, 90);
-            GameObject go = Instantiate(laser, spawnPos, spawnRot);                         //change the orientation here
+            GameObject go = Instantiate(laser, spawnPos, spawnRot);
             laserTileArray.Add(go);
             laserPreviousY = laserPreviousY + 0.08f;
             laserTilesMade++;

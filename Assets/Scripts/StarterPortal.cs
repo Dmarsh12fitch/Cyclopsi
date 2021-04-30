@@ -33,7 +33,7 @@ public class StarterPortal : MonoBehaviour
     {
         yield return new WaitForSeconds(0.5f);
         transform.localScale = new Vector3(1.5f, 1.5f, 1.5f);
-        playercontrollerScript.transform.localScale = new Vector3(0.5f, 0.5f, 0.5f);
+        playercontrollerScript.transform.localScale = new Vector3(0.25f, 0.25f, 0.25f);
         playercontrollerScript.eyeStaticDisplay.SetActive(true);
         StartCoroutine(phase4());
     }
@@ -41,12 +41,18 @@ public class StarterPortal : MonoBehaviour
     IEnumerator phase4()
     {
         yield return new WaitForSeconds(0.25f);
-        playercontrollerScript.transform.localScale = new Vector3(0.75f, 0.75f, 0.75f);
+        playercontrollerScript.transform.localScale = new Vector3(0.5f, 0.5f, 0.5f);
         StartCoroutine(phase5());
     }
 
-
     IEnumerator phase5()
+    {
+        yield return new WaitForSeconds(0.25f);
+        playercontrollerScript.transform.localScale = new Vector3(0.75f, 0.75f, 0.75f);
+        StartCoroutine(phase6());
+    }
+
+    IEnumerator phase6()
     {
         yield return new WaitForSeconds(0.25f);
         playercontrollerScript.transform.localScale = new Vector3(1, 1, 1);
@@ -54,24 +60,24 @@ public class StarterPortal : MonoBehaviour
         playercontrollerScript.playerRigibody.constraints = RigidbodyConstraints2D.None;
         playercontrollerScript.playerRigibody.constraints = RigidbodyConstraints2D.FreezeRotation;
         playercontrollerScript.playerRigibody.AddForce(new Vector3(0, 1, 0), ForceMode2D.Impulse);
-        StartCoroutine(phase6());
-    }
-
-    IEnumerator phase6()
-    {
-        yield return new WaitForSeconds(0.5f);
-        transform.localScale = new Vector3(1, 1, 1);
         StartCoroutine(phase7());
     }
 
     IEnumerator phase7()
     {
         yield return new WaitForSeconds(0.5f);
-        transform.localScale = new Vector3(0.75f, 0.75f, 0.75f);
+        transform.localScale = new Vector3(1, 1, 1);
         StartCoroutine(phase8());
     }
 
     IEnumerator phase8()
+    {
+        yield return new WaitForSeconds(0.5f);
+        transform.localScale = new Vector3(0.75f, 0.75f, 0.75f);
+        StartCoroutine(phase9());
+    }
+
+    IEnumerator phase9()
     {
         yield return new WaitForSeconds(0.5f);
         starterPortalAnimDisplay.SetActive(false);
