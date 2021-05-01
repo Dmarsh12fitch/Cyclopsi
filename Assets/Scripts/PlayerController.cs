@@ -250,7 +250,7 @@ public class PlayerController : MonoBehaviour
         idleDelay = idleDelayMax;
     }
 
-    void fireLaser()
+    public void fireLaser()
     {
         imobilized = true;
         playerRigibody.constraints = RigidbodyConstraints2D.FreezeAll;
@@ -258,7 +258,7 @@ public class PlayerController : MonoBehaviour
         laserPreviousX = transform.position.x;
         laserPreviousY = transform.position.y;
         laserTilesMade = 0;
-                                                                                            //DO ANIMATION HERE + WAIT, then
+                                                                                            //DO ANIMATION HERE + WAIT, then (depending on which direction facing)
         InvokeRepeating("makeALaserTile", 0, 0.02f);
     }
 
