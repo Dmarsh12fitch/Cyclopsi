@@ -14,6 +14,11 @@ public class PlayerController : MonoBehaviour
     public GameObject eyeFrontStaticDisplay;
     public GameObject eyeFrontAnimDisplay;
 
+    public GameObject eyeFireAnimDisplay;
+    public GameObject eyeFireUpAnimDisplay;
+    public GameObject eyeFireStaticDisplay;
+    public GameObject eyeFireUpStaticDisplay;
+
     public GameObject laser;
     public List<GameObject> laserTileArray;
     private int laserTilesMade;
@@ -32,6 +37,7 @@ public class PlayerController : MonoBehaviour
     private float laserPreviousY;
 
     private bool onMushroomTop = false;
+    private bool onSlider = false;
 
 
 
@@ -84,7 +90,10 @@ public class PlayerController : MonoBehaviour
             //fire Lazer
             if (Input.GetButtonDown("Fire3"))
             {
-                fireLaser();
+                if (!onSlider)
+                {
+                    fireLaser();
+                }
             }
 
             //idle or static
@@ -138,6 +147,7 @@ public class PlayerController : MonoBehaviour
         if (collision.gameObject.CompareTag("Slider"))
         {
             isOnGround = true;
+            onSlider = true;
             transform.parent = collision.gameObject.transform;
         }
         if (collision.gameObject.CompareTag("jumpPlatform"))
@@ -156,6 +166,7 @@ public class PlayerController : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Slider"))
         {
+            onSlider = false;
             transform.parent = null;
         } else if (collision.gameObject.CompareTag("jumpPlatform"))
         {
@@ -190,11 +201,13 @@ public class PlayerController : MonoBehaviour
     }
 
 
-    void lookLeft()
+    public void lookLeft()
     {
         isLooking = "left";
         eyeIdleAnimDisplay.transform.rotation = new Quaternion(0, 0, 0, 0);
         eyeStaticDisplay.transform.rotation = new Quaternion(0, 0, 0, 0);
+        eyeFireAnimDisplay.transform.rotation = new Quaternion(0, 0, 0, 0);
+        eyeFireStaticDisplay.transform.rotation = new Quaternion(0, 0, 0, 0);
         eyeLookUpAnimDisplay.SetActive(false);
         eyeStaticDisplay.SetActive(true);
         eyeIdleAnimDisplay.SetActive(false);
@@ -204,11 +217,13 @@ public class PlayerController : MonoBehaviour
         idleDelay = idleDelayMax;
     }
 
-    void lookRight()
+    public void lookRight()
     {
         isLooking = "right";
         eyeIdleAnimDisplay.transform.rotation = new Quaternion(0, 180, 0, 0);
         eyeStaticDisplay.transform.rotation = new Quaternion(0, 180, 0, 0);
+        eyeFireAnimDisplay.transform.rotation = new Quaternion(0, 180, 0, 0);
+        eyeFireStaticDisplay.transform.rotation = new Quaternion(0, 180, 0, 0);
         eyeLookUpAnimDisplay.SetActive(false);
         eyeStaticDisplay.SetActive(true);
         eyeIdleAnimDisplay.SetActive(false);
@@ -258,7 +273,28 @@ public class PlayerController : MonoBehaviour
         laserPreviousX = transform.position.x;
         laserPreviousY = transform.position.y;
         laserTilesMade = 0;
-                                                                                            //DO ANIMATION HERE + WAIT, then (depending on which direction facing)
+        if(isLooking == "up")
+        {
+            eyeFireUpAnimDisplay.SetActive(true);
+        } else if(isLooking == "right" || isLooking == "left")
+        {
+            eyeFireAnimDisplay.SetActive(true);
+        }
+        StartCoroutine(stopFireAnim());
+    }
+
+    IEnumerator stopFireAnim()
+    {
+        yield return new WaitForSeconds(0.4f);         //different time
+        if(isLooking == "up")
+        {
+            eyeFireUpAnimDisplay.SetActive(false);
+            eyeFireUpStaticDisplay.SetActive(true);
+        } else if (isLooking == "right" || isLooking == "left")
+        {
+            eyeFireAnimDisplay.SetActive(false);
+            eyeFireStaticDisplay.SetActive(true);
+        }
         InvokeRepeating("makeALaserTile", 0, 0.02f);
     }
 
@@ -272,14 +308,14 @@ public class PlayerController : MonoBehaviour
 
         if (isLooking == "right" && !hashitsomething)
         {
-            Vector3 spawnPos = new Vector3((laserPreviousX - 0.08f), laserPreviousY, 0.3f);
+            Vector3 spawnPos = new Vector3((laserPreviousX - 0.08f), (laserPreviousY + 0.02f), 0.3f);
             GameObject go = Instantiate(laser, spawnPos, Quaternion.identity);
             laserTileArray.Add(go);
             laserPreviousX = laserPreviousX - 0.08f;
             laserTilesMade++;
         } else if (isLooking == "left" && !hashitsomething)
         {
-            Vector3 spawnPos = new Vector3((laserPreviousX + 0.08f), laserPreviousY, 0.3f);
+            Vector3 spawnPos = new Vector3((laserPreviousX + 0.08f), (laserPreviousY + 0.02f), 0.3f);
             GameObject go = Instantiate(laser, spawnPos, Quaternion.identity);
             laserTileArray.Add(go);
             laserPreviousX = laserPreviousX + 0.08f;
@@ -299,6 +335,8 @@ public class PlayerController : MonoBehaviour
     {
         //destroy lasers and unpause
         yield return new WaitForSeconds(1f);
+        eyeFireStaticDisplay.SetActive(false);
+        eyeFireUpStaticDisplay.SetActive(false);
         imobilized = false;
         playerRigibody.constraints = RigidbodyConstraints2D.None;
         playerRigibody.constraints = RigidbodyConstraints2D.FreezeRotation;

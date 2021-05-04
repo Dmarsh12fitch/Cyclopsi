@@ -22,6 +22,7 @@ public class LaserTile : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
+        playerControllerScript = GameObject.Find("Player").GetComponent<PlayerController>();        //backup???
         if (collision.gameObject.CompareTag("Button") && !collision.gameObject.CompareTag("Laser") && !hascollidedOnce)
         {
             collision.gameObject.GetComponent<SliderButton>().buttonPress();

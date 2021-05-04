@@ -6,6 +6,7 @@ using UnityEngine.SceneManagement;
 public class StartGame : MonoBehaviour
 {
     private PlayerController playerControllerScript;
+    public bool gameHasNotStarted = true;
 
     void Start()
     {
@@ -14,6 +15,7 @@ public class StartGame : MonoBehaviour
 
     public void startTheGame()
     {
+        playerControllerScript.lookRight();
         playerControllerScript.fireLaser();
         StartCoroutine(phaseFinal());
     }
@@ -21,7 +23,7 @@ public class StartGame : MonoBehaviour
 
     IEnumerator phaseFinal()
     {
-        yield return new WaitForSeconds(6);
+        yield return new WaitForSeconds(3);
         SceneManager.LoadScene(1);
     }
 }
