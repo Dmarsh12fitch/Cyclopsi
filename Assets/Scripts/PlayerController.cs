@@ -90,7 +90,7 @@ public class PlayerController : MonoBehaviour
             //fire Lazer
             if (Input.GetButtonDown("Fire3"))
             {
-                if (!onSlider)
+                if (!onSlider && !(isLooking == "camera"))
                 {
                     fireLaser();
                 }
