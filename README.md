@@ -35,3 +35,9 @@ Friday, April 30th	3 hours		Level design, jump boost functionality, more art ass
 
 Monday, May 3rd		3 hours		Level design, fixing bugs, fixing slight issues in asset animations
 
+Thursday, May 6th	1 hour		Level design
+
+Sunday, May 9th		4 hours		Level design
+
+Monday, May 10th	2 hours		Playtesting + fixing small issues.
+
